@@ -19,4 +19,15 @@ after_success:
   - docker push kausjethdoc/multi-nginx
   - docker push kausjethdoc/multi-server
   - docker push kausjethdoc/multi-worker
-  -
+
+deploy:
+  provider: elasticbeanstalk
+  region: us-east-2
+  app: multi-docker
+  env: Multidocker-env
+  bucket_name: elasticbeanstalk-us-east-2-747399956029
+  bucket_path: docker-multi
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
