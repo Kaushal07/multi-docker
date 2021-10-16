@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t kausjethdoc/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true kausjethdoc/react-test npm test
+
+after_success:
+  - docker build -t kausjethdoc/multi-client ./client
+  - docker build -t kausjethdoc/multi-nginx ./nginx
+  - docker build -t kausjethdoc/multi-server ./server
+  - docker build -t kausjethdoc/multi-worker ./worker
+  # log in to docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push kausjethdoc/multi-client
+  - docker push kausjethdoc/multi-nginx
+  - docker push kausjethdoc/multi-server
+  - docker push kausjethdoc/multi-worker
+  -
