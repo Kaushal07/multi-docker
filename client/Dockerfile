@@ -10,7 +10,7 @@ RUN mkdir /usr/app/node_modules/.cache && chmod -R 777 /usr/app/node_modules/.ca
 
 COPY . .
 
-CMD ["npm", "run", "build"]
+RUN npm run build
 
 
 FROM nginx
